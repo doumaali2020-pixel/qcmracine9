@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz - Racines Carrées & Produits Remarquables | Prof Douma Ali</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Configuration de MathJax pour interpréter le LaTeX -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+  :root{
+    --navy:#0f1424; --ocean:#1282A2; --coral:#F72585; --teal:#4CC9F0;
+    --yellow:#FFD60A; --green:#06D6A0; --dark:#1b264b;
+  }
+  html,body{height:100%;overflow-x:hidden}
+  body{
+    background:linear-gradient(-45deg,#0f1424,#1282A2,#4CC9F0,#F72585);
+    background-size:400% 400%; animation:bgGradient 18s ease infinite;
+    min-height:100vh; color:#fff; position:relative;
+  }
+  @keyframes bgGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+  .math-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .math-bg span{position:absolute;font-size:2rem;opacity:.15;color:#fff;animation:floatUp linear infinite;font-weight:700}
+  @keyframes floatUp{0%{transform:translateY(110vh) rotate(0deg);opacity:0}10%{opacity:.2}90%{opacity:.2}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
+
+  header{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(15,20,36,.45);backdrop-filter:blur(12px);border-bottom:2px solid rgba(255,214,10,.4);box-shadow:0 4px 30px rgba(0,0,0,.4)}
+  .logo-wrap{display:flex;align-items:center;gap:12px}
+  .logo-img{width:60px;height:60px;border-radius:50%;border:3px solid var(--yellow);box-shadow:0 0 25px rgba(255,214,10,.6),inset 0 0 15px rgba(247,37,133,.3);animation:spinSlow 12s linear infinite,logoGlow 3s ease-in-out infinite alternate;object-fit:cover;background:#fff}
+  .logo-fallback{width:60px;height:60px;border-radius:50%;border:3px solid var(--yellow);background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-size:1.5rem;font-weight:700;color:var(--yellow);box-shadow:0 0 25px rgba(255,214,10,.6),inset 0 0 15px rgba(247,37,133,.3);animation:spinSlow 12s linear infinite,logoGlow 3s ease-in-out infinite alternate}
+  @keyframes spinSlow{to{transform:rotate(360deg)}}
+  @keyframes logoGlow{from{box-shadow:0 0 25px rgba(76,201,240,.6),inset 0 0 15px rgba(247,37,133,.3)}to{box-shadow:0 0 45px rgba(247,37,133,.8),inset 0 0 20px rgba(18,130,162,.5)}}
+  .logo-text{font-family:'Fredoka',sans-serif;font-weight:700;font-size:.85rem;line-height:1.1}
+  .logo-text .a{color:var(--yellow)} .logo-text .b{color:#fff;font-size:.7rem;letter-spacing:2px}
+  .prof{text-align:right;font-family:'Fredoka',sans-serif}
+  .prof .label{font-size:.6rem;color:var(--teal);letter-spacing:2px;text-transform:uppercase}
+  .prof .name{font-size:1.2rem;font-weight:700;background:linear-gradient(90deg,var(--yellow),var(--coral),var(--yellow));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 3s linear infinite}
+  @keyframes shine{to{background-position:200% center}}
+  .prof .role{font-size:.65rem;color:#fff;opacity:.8}
+
+  .music-toggle{position:fixed;top:20px;right:50%;transform:translateX(50%);z-index:100;background:linear-gradient(135deg,var(--coral),var(--ocean));color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1rem;box-shadow:0 5px 20px rgba(247,37,133,.5);transition:.3s;display:none}
+  .music-toggle:hover{transform:translateX(50%) scale(1.15)} .music-toggle.playing{animation:pulse 1.5s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 5px 30px rgba(255,214,10,.8)}}
+
+  .photo-btn{position:fixed;bottom:20px;right:20px;z-index:100;background:linear-gradient(135deg,var(--ocean),var(--navy));color:#fff;border:none;width:45px;height:45px;border-radius:50%;cursor:pointer;font-size:1.1rem;box-shadow:0 5px 20px rgba(18,130,162,.6);transition:.3s;display:none}
+  .photo-btn:hover{transform:scale(1.1)}
+  .exit-photo-btn{position:fixed;bottom:20px;right:20px;z-index:100;background:var(--coral);color:#fff;border:none;padding:10px 20px;border-radius:30px;cursor:pointer;font-size:.9rem;font-family:'Fredoka',sans-serif;box-shadow:0 5px 20px rgba(247,37,133,.5);display:none}
+
+  main{position:relative;z-index:5;max-width:900px;margin:20px auto;padding:0 15px 40px}
+
+  .start-screen{background:rgba(15,20,36,.4);backdrop-filter:blur(20px);border:1px solid rgba(76,201,240,.3);border-radius:25px;padding:40px 30px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:fadeUp .8s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+  .start-screen h1{font-family:'Fredoka',sans-serif;font-size:2.2rem;font-weight:700;background:linear-gradient(90deg,var(--yellow),#fff,var(--yellow));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 4s linear infinite;margin-bottom:10px}
+  .start-screen .subtitle{font-size:1rem;color:#fff;opacity:.9;margin-bottom:25px}
+  .start-screen .info-box{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin:20px 0}
+  .info-card{background:rgba(0,0,0,.3);border:1px solid rgba(76,201,240,.4);border-radius:12px;padding:12px 20px;min-width:110px}
+  .info-card i{font-size:1.5rem;color:var(--yellow);margin-bottom:5px} .info-card div{font-size:.8rem;opacity:.85} .info-card strong{font-size:1.1rem;color:#fff;display:block}
+  .btn-start{background:linear-gradient(135deg,var(--yellow),#ff8c00);color:var(--navy);border:none;padding:12px 40px;font-size:1.1rem;font-weight:700;border-radius:50px;cursor:pointer;margin-top:15px;box-shadow:0 8px 30px rgba(255,214,10,.5);transition:.3s;font-family:'Fredoka',sans-serif;letter-spacing:1px}
+  .btn-start:hover{transform:translateY(-4px) scale(1.05);box-shadow:0 12px 40px rgba(255,214,10,.7)}
+
+  .quiz-screen{display:none;animation:fadeUp .6s ease} .quiz-screen.active{display:block}
+  .quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap;gap:10px}
+  .progress-info,.score-info{background:rgba(15,20,36,.5);padding:8px 15px;border-radius:25px;font-family:'Fredoka',sans-serif}
+  .progress-info{border:1px solid rgba(76,201,240,.4)} .progress-info span{color:var(--teal);font-weight:700;font-size:1rem}
+  .score-info{border:1px solid rgba(6,214,160,.4)} .score-info span{color:var(--green);font-weight:700;font-size:1rem}
+
+  .progress-bar{width:100%;height:8px;background:rgba(0,0,0,.3);border-radius:10px;overflow:hidden;margin-bottom:15px;border:1px solid rgba(255,255,255,.1)}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--coral),var(--yellow),var(--green));background-size:200% 100%;width:0%;transition:width .5s ease;animation:gradMove 3s linear infinite}
+  @keyframes gradMove{to{background-position:200% 0}}
+
+  .question-card{background:rgba(15,20,36,.4);backdrop-filter:blur(20px);border:1px solid rgba(76,201,240,.3);border-radius:20px;padding:25px;box-shadow:0 15px 50px rgba(0,0,0,.4);position:relative;overflow:hidden}
+  .question-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(76,201,240,.1),transparent 30%);animation:rotate 8s linear infinite;pointer-events:none}
+  @keyframes rotate{to{transform:rotate(360deg)}}
+
+  .question-number{display:inline-block;background:linear-gradient(135deg,var(--coral),var(--ocean));padding:5px 15px;border-radius:15px;font-family:'Fredoka',sans-serif;font-size:.75rem;margin-bottom:15px;box-shadow:0 4px 15px rgba(247,37,133,.4);position:relative;z-index:1}
+  
+  /* Police de la question réduite */
+  .question-text{font-size:1.4rem;font-weight:600;margin-bottom:20px;line-height:1.4;position:relative;z-index:1;text-align:center}
+  
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1}
+  @media(max-width:600px){.choices{grid-template-columns:1fr}}
+  
+  /* Police des choix réduite */
+  .choice{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);border-radius:12px;padding:12px 15px;cursor:pointer;transition:.3s;font-size:1rem;font-weight:500;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden}
+  .choice::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(76,201,240,.2));opacity:0;transition:.3s}
+  .choice:hover::before{opacity:1}
+  .choice:hover{transform:translateY(-2px);border-color:var(--yellow);box-shadow:0 5px 15px rgba(255,214,10,.3)}
+  .choice .letter{width:30px;height:30px;background:linear-gradient(135deg,var(--coral),var(--ocean));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-family:'Fredoka',sans-serif;flex-shrink:0;transition:.3s;font-size:.9rem}
+  .choice:hover .letter{transform:rotate(360deg) scale(1.1)}
+  .choice.correct{background:linear-gradient(135deg,rgba(6,214,160,.4),rgba(6,214,160,.2));border-color:var(--green);animation:correctPulse .8s ease;box-shadow:0 0 30px rgba(6,214,160,.6)}
+  .choice.correct .letter{background:var(--green)}
+  @keyframes correctPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  .choice.wrong{background:linear-gradient(135deg,rgba(247,37,133,.4),rgba(247,37,133,.2));border-color:var(--coral);animation:shake .5s ease;box-shadow:0 0 20px rgba(247,37,133,.5)}
+  .choice.wrong .letter{background:var(--coral)}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+  .choice.disabled{pointer-events:none;opacity:.7}
+  .choice.reveal{background:linear-gradient(135deg,rgba(6,214,160,.3),rgba(6,214,160,.15));border-color:var(--green);animation:revealPulse 1s ease}
+  @keyframes revealPulse{0%{box-shadow:0 0 0 rgba(6,214,160,.8)}50%{box-shadow:0 0 30px rgba(6,214,160,.8)}100%{box-shadow:0 0 15px rgba(6,214,160,.5)}}
+
+  .feedback-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;pointer-events:none;padding:15px}
+  .feedback-overlay.show{display:flex;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  
+  /* Boîte de correction compactée */
+  .feedback-box{background:rgba(15,20,36,.95);backdrop-filter:blur(15px);padding:25px 30px;border-radius:20px;text-align:center;border:3px solid;animation:popIn .5s cubic-bezier(.68,-0.55,.27,1.55);position:relative;max-width:450px;width:100%}
+  @keyframes popIn{0%{transform:scale(0) rotate(-180deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+  .feedback-box.correct{border-color:var(--green);box-shadow:0 0 60px rgba(6,214,160,.8),inset 0 0 30px rgba(6,214,160,.2)}
+  .feedback-box.wrong{border-color:var(--coral);box-shadow:0 0 60px rgba(247,37,133,.8),inset 0 0 30px rgba(247,37,133,.2)}
+  .feedback-icon{font-size:3rem;margin-bottom:10px;animation:bounce 1s ease infinite}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .feedback-box.correct .feedback-icon{color:var(--green)} .feedback-box.wrong .feedback-icon{color:var(--coral)}
+  .feedback-title{font-family:'Fredoka',sans-serif;font-size:1.8rem;font-weight:700;margin-bottom:5px}
+  .feedback-box.correct .feedback-title{background:linear-gradient(90deg,var(--yellow),var(--green),var(--yellow));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 2s linear infinite}
+  .feedback-box.wrong .feedback-title{color:var(--coral);text-shadow:0 0 20px rgba(247,37,133,.5)}
+  .feedback-msg{font-size:.9rem;opacity:.9;margin-top:5px}
+  
+  /* Police de correction réduite */
+  .feedback-answer{margin-top:10px;padding:15px;background:rgba(0,0,0,.4);border-radius:10px;border:1px dashed rgba(255,255,255,.3);font-size:1rem;text-align:center;color:#fff;display:none}
+  .feedback-answer strong{color:var(--yellow)}
+  .fb-formula{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.2)}
+  .fb-formula i{color:var(--yellow);margin-right:8px}
+
+  .light-rays{position:absolute;inset:-50%;pointer-events:none;opacity:0}
+  .feedback-box.correct .light-rays{opacity:1;animation:rayShow 1.5s ease}
+  @keyframes rayShow{0%{opacity:0;transform:scale(.5) rotate(0)}50%{opacity:1}100%{opacity:.3;transform:scale(1.5) rotate(180deg)}}
+  .light-rays::before{content:'';position:absolute;inset:0;background:conic-gradient(from 0deg,transparent 0deg,rgba(255,214,10,.4) 10deg,transparent 20deg,transparent 60deg,rgba(6,214,160,.4) 70deg,transparent 80deg,transparent 120deg,rgba(255,214,10,.4) 130deg,transparent 140deg,transparent 180deg,rgba(6,214,160,.4) 190deg,transparent 200deg,transparent 240deg,rgba(255,214,10,.4) 250deg,transparent 260deg,transparent 300deg,rgba(6,214,160,.4) 310deg,transparent 320deg)}
+
+  .confetti-piece{position:fixed;width:10px;height:10px;top:-20px;z-index:1001;pointer-events:none;animation:confettiFall linear forwards}
+  @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+  .next-btn{background:linear-gradient(135deg,var(--ocean),var(--navy));color:#fff;border:none;padding:10px 30px;font-size:.95rem;font-weight:600;border-radius:25px;cursor:pointer;margin:20px auto 0;display:block;box-shadow:0 6px 20px rgba(18,130,162,.5);transition:.3s;opacity:0;pointer-events:none;font-family:'Fredoka',sans-serif;position:relative;z-index:1}
+  .next-btn.show{opacity:1;pointer-events:auto;animation:fadeUp .5s ease}
+  .next-btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(18,130,162,.7)}
+
+  .end-screen{display:none;animation:fadeUp .8s ease} .end-screen.active{display:block}
+  .end-card{background:rgba(15,20,36,.4);backdrop-filter:blur(20px);border:2px solid rgba(76,201,240,.4);border-radius:25px;padding:40px 30px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  .end-title{font-family:'Fredoka',sans-serif;font-size:2rem;margin-bottom:15px;background:linear-gradient(90deg,var(--yellow),var(--coral),var(--yellow));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 3s linear infinite}
+  .score-display{font-size:4rem;font-weight:900;font-family:'Fredoka',sans-serif;margin:15px 0;background:linear-gradient(135deg,var(--green),var(--yellow));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:scoreReveal 1s cubic-bezier(.68,-0.55,.27,1.55)}
+  @keyframes scoreReveal{0%{transform:scale(0);opacity:0}70%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+  .score-label{font-size:1rem;opacity:.85;margin-bottom:15px}
+  .stars{text-align:center;margin:15px 0} .stars i{font-size:2rem;color:#333;margin:0 4px;transition:.5s}
+  .stars i.active{color:var(--yellow);text-shadow:0 0 20px rgba(255,214,10,.7);animation:starPop .5s ease}
+  @keyframes starPop{0%{transform:scale(0) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+  .message{font-size:1rem;margin:15px 0;padding:12px;background:rgba(0,0,0,.3);border-radius:12px;border-left:4px solid var(--yellow);text-align:left}
+  .btn-replay{background:linear-gradient(135deg,var(--green),#0a9d6b);color:#fff;border:none;padding:12px 40px;font-size:1.1rem;font-weight:700;border-radius:50px;cursor:pointer;margin-top:15px;box-shadow:0 8px 30px rgba(6,214,160,.5);transition:.3s;font-family:'Fredoka',sans-serif}
+  .btn-replay:hover{transform:translateY(-4px) scale(1.05);box-shadow:0 12px 40px rgba(6,214,160,.7)}
+
+  footer{text-align:center;padding:15px;font-size:.8rem;opacity:.6;position:relative;z-index:5}
+
+  /* MathJax styling override for dark theme */
+  mjx-container { color: #fff !important; }
+  .choice mjx-container { color: #fff !important; }
+  .choice.correct mjx-container { color: #fff !important; }
+  .feedback-answer mjx-container { color: var(--green) !important; }
+  .fb-formula mjx-container { color: var(--yellow) !important; }
+
+  /* ========================================== MODE PHOTO ========================================== */
+  body.photo-mode { background: #ffffff !important; animation: none !important; color: #000000 !important; }
+  body.photo-mode .math-bg { display: none !important; }
+  body.photo-mode header { background: #ffffff !important; border-bottom: 3px solid var(--coral) !important; box-shadow: none !important; padding: 10px 20px !important; }
+  body.photo-mode .logo-text .a { color: var(--coral) !important; }
+  body.photo-mode .logo-text .b { color: var(--ocean) !important; }
+  body.photo-mode .prof .name { background: none !important; -webkit-text-fill-color: var(--coral) !important; color: var(--coral) !important; font-size: 1rem !important; }
+  body.photo-mode .prof .label, body.photo-mode .prof .role { color: var(--ocean) !important; }
+  body.photo-mode .logo-img { box-shadow: none !important; animation: none !important; border-color: var(--coral) !important; width: 50px !important; height: 50px !important; }
+  body.photo-mode .question-card { background: #ffffff !important; border: none !important; box-shadow: none !important; padding: 15px !important; min-height: calc(100vh - 90px); display: flex; flex-direction: column; justify-content: center; }
+  body.photo-mode .question-card::before { display: none !important; }
+  body.photo-mode .question-text { color: var(--navy) !important; font-size: 1.6rem !important; margin-bottom: 20px !important; text-align: center !important; }
+  body.photo-mode .choices { max-width: 400px; margin: 0 auto; }
+  body.photo-mode .choice { background: #ffffff !important; border: 2px solid var(--ocean) !important; color: #000000 !important; font-size: 1.1rem !important; box-shadow: none !important; margin-bottom: 10px !important; border-radius: 10px !important; padding: 10px 15px !important; }
+  body.photo-mode .choice:hover { transform: none !important; border-color: var(--ocean) !important; box-shadow: none !important; }
+  body.photo-mode .choice:hover::before { display: none !important; }
+  body.photo-mode .choice:hover .letter { transform: none !important; }
+  body.photo-mode .choice .letter { background: var(--ocean) !important; color: #ffffff !important; border-radius: 8px !important; width: 25px !important; height: 25px !important; font-size: .8rem !important; }
+  body.photo-mode .quiz-header, body.photo-mode .progress-bar, body.photo-mode .next-btn, body.photo-mode .music-toggle { display: none !important; }
+  body.photo-mode mjx-container { color: var(--navy) !important; }
+  body.photo-mode .choice mjx-container { color: #000000 !important; }
+</style>
+</head>
+<body>
+
+<div class="math-bg" id="mathBg"></div>
+
+<header>
+  <div class="logo-wrap">
+    <img src="https://z-cdn-media.chatglm.cn/files/3a266fe6-2539-40ea-8f0c-10fcc4deaeb5.png?auth_key=1885945021-0b902fab44b7438f98f0ce262cc38397-0-3c5458ae6151a0c8114545b0b43f2f64" alt="Logo Douma Ali" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+    <div id="logoFallback" class="logo-fallback" style="display:none;">DA</div>
+    <div class="logo-text">
+      <div class="a">Douma Ali</div>
+      <div class="b">MATHÉMATIQUES</div>
+    </div>
+  </div>
+  <div class="prof">
+    <div class="label">Professeur</div>
+    <div class="name">Douma Ali</div>
+    <div class="role">Mathématiques · Collège</div>
+  </div>
+</header>
+
+<button class="music-toggle" id="musicToggle" title="Activer la musique"><i class="fas fa-music"></i></button>
+<button class="photo-btn" id="photoBtn" title="Mode Photo pour Capture d'écran"><i class="fas fa-camera"></i></button>
+<button class="exit-photo-btn" id="exitPhotoBtn" title="Quitter le mode Photo"><i class="fas fa-times-circle"></i> Quitter</button>
+
+<main>
+  <section class="start-screen" id="startScreen">
+    <h1>Racines Carrées</h1>
+    <p class="subtitle">Calculs, Simplifications et Produits Remarquables · Niveau Collège</p>
+    <div class="info-box">
+      <div class="info-card"><i class="fas fa-question-circle"></i><strong>20</strong><div>Questions</div></div>
+      <div class="info-card"><i class="fas fa-list-ol"></i><strong>4</strong><div>Choix</div></div>
+      <div class="info-card"><i class="fas fa-graduation-cap"></i><strong>Collège</strong><div>Niveau</div></div>
+      <div class="info-card"><i class="fas fa-star"></i><strong>20</strong><div>Points max</div></div>
+    </div>
+    <p style="opacity:.8;margin-top:15px;font-size:.9rem">
+      <i class="fas fa-info-circle"></i> Bonne chance ! Les formules seront rappelées dans la correction de chaque question.
+    </p>
+    <button class="btn-start" id="btnStart"><i class="fas fa-play"></i> Commencer le Quiz</button>
+  </section>
+
+  <section class="quiz-screen" id="quizScreen">
+    <div class="quiz-header">
+      <div class="progress-info">Question <span id="qCurrent">1</span> / <span id="qTotal">20</span></div>
+      <div class="score-info">Score : <span id="scoreDisplay">0</span> / 20</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="question-card">
+      <div class="question-number" id="qNumber">Question 1</div>
+      <div class="question-text" id="qText">...</div>
+      <div class="choices" id="choices"></div>
+      <button class="next-btn" id="nextBtn">Question suivante <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </section>
+
+  <section class="end-screen" id="endScreen">
+    <div class="end-card">
+      <div class="end-title" id="endTitle">Quiz Terminé !</div>
+      <div class="score-display" id="finalScore">0</div>
+      <div class="score-label">votre note sur 20</div>
+      <div class="stars" id="stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+      </div>
+      <div class="message" id="endMessage">...</div>
+      <button class="btn-replay" id="btnReplay"><i class="fas fa-redo"></i> Rejouer avec de nouvelles questions</button>
+    </div>
+  </section>
+</main>
+
+<footer>© Prof Douma Ali · Mathématiques · Racines Carrées</footer>
+
+<div class="feedback-overlay" id="feedbackOverlay">
+  <div class="feedback-box" id="feedbackBox">
+    <div class="light-rays"></div>
+    <div class="feedback-icon" id="feedbackIcon"></div>
+    <div class="feedback-title" id="feedbackTitle"></div>
+    <div class="feedback-msg" id="feedbackMsg"></div>
+    <div class="feedback-answer" id="feedbackAnswer"></div>
+  </div>
+</div>
+
+<script>
+/* ============================ QUESTIONS (Set A & B) ============================ */
+const setA = [
+  // Faciles
+  {q:"Calculer : $ \\sqrt{25} $", f:"$ \\sqrt{a^2} = a $ (pour $ a \\ge 0 $)", c:["$ 5 $","$ -5 $","$ 25 $","$ 12.5 $"], e:"$ 5^2 = 25 $, donc $ \\sqrt{25} = 5 $", a:0},
+  {q:"Calculer : $ \\sqrt{49} $", f:"$ \\sqrt{a^2} = a $ (pour $ a \\ge 0 $)", c:["$ 7 $","$ -7 $","$ 24.5 $","$ 49 $"], e:"$ 7^2 = 49 $, donc $ \\sqrt{49} = 7 $", a:0},
+  {q:"Calculer : $ \\sqrt{16} + \\sqrt{9} $", f:"Calculer chaque racine séparément avant d'additionner.", c:["$ 7 $","$ 25 $","$ 5 $","$ 12 $"], e:"$ \\sqrt{16} + \\sqrt{9} = 4 + 3 = 7 $", a:0},
+  {q:"Calculer : $ \\sqrt{100} - \\sqrt{36} $", f:"Calculer chaque racine séparément avant de soustraire.", c:["$ 4 $","$ 64 $","$ 14 $","$ 16 $"], e:"$ 10 - 6 = 4 $", a:0},
+  // Simplifications
+  {q:"Simplifier : $ \\sqrt{50} $", f:"$ \\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b} $. Chercher un carré parfait.", c:["$ 5\\sqrt{2} $","$ 2\\sqrt{5} $","$ 25 $","$ 10 $"], e:"$ \\sqrt{50} = \\sqrt{25 \\times 2} = \\sqrt{25} \\times \\sqrt{2} = 5\\sqrt{2} $", a:0},
+  {q:"Simplifier : $ \\sqrt{27} $", f:"$ \\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b} $", c:["$ 3\\sqrt{3} $","$ 9\\sqrt{3} $","$ 13.5 $","$ 3 $"], e:"$ \\sqrt{27} = \\sqrt{9 \\times 3} = 3\\sqrt{3} $", a:0},
+  {q:"Simplifier : $ \\sqrt{75} $", f:"Chercher un carré parfait (9, 16, 25...)", c:["$ 5\\sqrt{3} $","$ 3\\sqrt{5} $","$ 25 $","$ 15 $"], e:"$ \\sqrt{75} = \\sqrt{25 \\times 3} = 5\\sqrt{3} $", a:0},
+  {q:"Simplifier : $ \\sqrt{32} $", f:"16 est un carré parfait qui divise 32.", c:["$ 4\\sqrt{2} $","$ 2\\sqrt{4} $","$ 16 $","$ 8 $"], e:"$ \\sqrt{32} = \\sqrt{16 \\times 2} = 4\\sqrt{2} $", a:0},
+  // Sommes
+  {q:"Calculer : $ A = 3\\sqrt{2} + 5\\sqrt{2} $", f:"On peut additionner des racines si elles ont le même nombre sous le radical.", c:["$ 8\\sqrt{2} $","$ 15\\sqrt{2} $","$ 8 $","$ 8\\sqrt{4} $"], e:"$ A = (3+5)\\sqrt{2} = 8\\sqrt{2} $", a:0},
+  {q:"Calculer : $ B = 4\\sqrt{3} - \\sqrt{3} $", f:"$ \\sqrt{3} = 1\\sqrt{3} $", c:["$ 3\\sqrt{3} $","$ 4 $","$ 4\\sqrt{3} $","$ 3 $"], e:"$ B = (4-1)\\sqrt{3} = 3\\sqrt{3} $", a:0},
+  {q:"Calculer : $ C = \\sqrt{27} + 2\\sqrt{3} $", f:"Simplifier $ \\sqrt{27} $ avant d'additionner.", c:["$ 5\\sqrt{3} $","$ 3\\sqrt{3} $","$ 29\\sqrt{3} $","$ 5\\sqrt{27} $"], e:"$ C = 3\\sqrt{3} + 2\\sqrt{3} = 5\\sqrt{3} $", a:0},
+  {q:"Calculer : $ D = \\sqrt{50} - 3\\sqrt{2} $", f:"Simplifier $ \\sqrt{50} $ avant de soustraire.", c:["$ 2\\sqrt{2} $","$ 8\\sqrt{2} $","$ 47\\sqrt{2} $","$ 5\\sqrt{2} $"], e:"$ D = 5\\sqrt{2} - 3\\sqrt{2} = 2\\sqrt{2} $", a:0},
+  {q:"Calculer : $ E = \\sqrt{75} - 2\\sqrt{27} $", f:"Simplifier $ \\sqrt{75} $ et $ \\sqrt{27} $.", c:["$ -\\sqrt{3} $","$ 3\\sqrt{3} $","$ -3\\sqrt{3} $","$ 5\\sqrt{3} $"], e:"$ E = 5\\sqrt{3} - 2(3\\sqrt{3}) = 5\\sqrt{3} - 6\\sqrt{3} = -\\sqrt{3} $", a:0},
+  // Produits
+  {q:"Calculer : $ F = \\sqrt{8} \\times \\sqrt{2} $", f:"$ \\sqrt{a} \\times \\sqrt{b} = \\sqrt{a \\times b} $", c:["$ 4 $","$ 16 $","$ 2 $","$ \\sqrt{10} $"], e:"$ F = \\sqrt{8 \\times 2} = \\sqrt{16} = 4 $", a:0},
+  {q:"Calculer : $ G = 2\\sqrt{3} \\times 3\\sqrt{5} $", f:"Multiplier les nombres entre eux et les racines entre elles.", c:["$ 6\\sqrt{15} $","$ 5\\sqrt{15} $","$ 6\\sqrt{8} $","$ 5\\sqrt{8} $"], e:"$ G = (2 \\times 3) \\times (\\sqrt{3} \\times \\sqrt{5}) = 6\\sqrt{15} $", a:0},
+  // Produits remarquables
+  {q:"Calculer : $ H = (1+\\sqrt{2})^2 $", f:"$ (a+b)^2 = a^2 + 2ab + b^2 $", c:["$ 3 + 2\\sqrt{2} $","$ 3 + \\sqrt{2} $","$ 1 + 2\\sqrt{2} $","$ 3 $"], e:"$ H = 1^2 + 2(1)(\\sqrt{2}) + (\\sqrt{2})^2 = 1 + 2\\sqrt{2} + 2 = 3 + 2\\sqrt{2} $", a:0},
+  {q:"Calculer : $ K = (\\sqrt{3}-1)^2 $", f:"$ (a-b)^2 = a^2 - 2ab + b^2 $", c:["$ 4 - 2\\sqrt{3} $","$ 3 - 2\\sqrt{3} $","$ 4 - \\sqrt{3} $","$ 2 - 2\\sqrt{3} $"], e:"$ K = 3 - 2\\sqrt{3} + 1 = 4 - 2\\sqrt{3} $", a:0},
+  {q:"Calculer : $ M = (\\sqrt{5}+2)(\\sqrt{5}-2) $", f:"$ (a+b)(a-b) = a^2 - b^2 $", c:["$ 1 $","$ 9 $","$ -1 $","$ 3 $"], e:"$ M = (\\sqrt{5})^2 - 2^2 = 5 - 4 = 1 $", a:0},
+  {q:"Calculer : $ N = (3\\sqrt{2} - 5)(3\\sqrt{2} + 5) $", f:"$ (a-b)(a+b) = a^2 - b^2 $", c:["$ -7 $","$ 7 $","$ -18 $","$ 43 $"], e:"$ N = (3\\sqrt{2})^2 - 5^2 = 9(2) - 25 = 18 - 25 = -7 $", a:0},
+  {q:"Calculer : $ P = (5\\sqrt{2} - 7)(5\\sqrt{2} + 7) $", f:"$ (a-b)(a+b) = a^2 - b^2 $. Ici $ a = 5\\sqrt{2} $", c:["$ 1 $","$ -1 $","$ 0 $","$ 2 $"], e:"$ P = (5\\sqrt{2})^2 - 7^2 = 25(2) - 49 = 50 - 49 = 1 $", a:0}
+];
+
+const setB = [
+  // Faciles
+  {q:"Calculer : $ \\sqrt{64} $", f:"$ \\sqrt{a^2} = a $", c:["$ 8 $","$ -8 $","$ 32 $","$ 16 $"], e:"$ 8^2 = 64 $, donc $ \\sqrt{64} = 8 $", a:0},
+  {q:"Calculer : $ \\sqrt{81} $", f:"$ \\sqrt{a^2} = a $", c:["$ 9 $","$ -9 $","$ 40.5 $","$ 81 $"], e:"$ 9^2 = 81 $, donc $ \\sqrt{81} = 9 $", a:0},
+  {q:"Calculer : $ \\sqrt{25} + \\sqrt{4} $", f:"Calculer chaque racine séparément.", c:["$ 7 $","$ 29 $","$ 9 $","$ 6 $"], e:"$ 5 + 2 = 7 $", a:0},
+  {q:"Calculer : $ \\sqrt{144} - \\sqrt{4} $", f:"Calculer chaque racine séparément.", c:["$ 10 $","$ 140 $","$ 12 $","$ 14 $"], e:"$ 12 - 2 = 10 $", a:0},
+  // Simplifications
+  {q:"Simplifier : $ \\sqrt{18} $", f:"$ \\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b} $", c:["$ 3\\sqrt{2} $","$ 2\\sqrt{3} $","$ 9 $","$ 6 $"], e:"$ \\sqrt{18} = \\sqrt{9 \\times 2} = 3\\sqrt{2} $", a:0},
+  {q:"Simplifier : $ \\sqrt{45} $", f:"Chercher un carré parfait divisant 45.", c:["$ 3\\sqrt{5} $","$ 5\\sqrt{3} $","$ 9 $","$ 15 $"], e:"$ \\sqrt{45} = \\sqrt{9 \\times 5} = 3\\sqrt{5} $", a:0},
+  {q:"Simplifier : $ \\sqrt{98} $", f:"49 est un carré parfait divisant 98.", c:["$ 7\\sqrt{2} $","$ 2\\sqrt{7} $","$ 49 $","$ 14 $"], e:"$ \\sqrt{98} = \\sqrt{49 \\times 2} = 7\\sqrt{2} $", a:0},
+  {q:"Simplifier : $ \\sqrt{48} $", f:"16 est un carré parfait divisant 48.", c:["$ 4\\sqrt{3} $","$ 3\\sqrt{4} $","$ 16 $","$ 12 $"], e:"$ \\sqrt{48} = \\sqrt{16 \\times 3} = 4\\sqrt{3} $", a:0},
+  // Sommes
+  {q:"Calculer : $ A = 5\\sqrt{7} - 2\\sqrt{7} $", f:"Additionner/soustraire les coefficients devant la racine.", c:["$ 3\\sqrt{7} $","$ 10\\sqrt{7} $","$ 3 $","$ 7\\sqrt{7} $"], e:"$ A = (5-2)\\sqrt{7} = 3\\sqrt{7} $", a:0},
+  {q:"Calculer : $ B = 4\\sqrt{2} + 6\\sqrt{2} $", f:"Additionner les coefficients.", c:["$ 10\\sqrt{2} $","$ 24\\sqrt{2} $","$ 10 $","$ 10\\sqrt{4} $"], e:"$ B = (4+6)\\sqrt{2} = 10\\sqrt{2} $", a:0},
+  {q:"Calculer : $ C = \\sqrt{12} + 3\\sqrt{3} $", f:"Simplifier $ \\sqrt{12} $ avant d'additionner.", c:["$ 5\\sqrt{3} $","$ 3\\sqrt{3} $","$ 4\\sqrt{3} $","$ 15\\sqrt{3} $"], e:"$ C = 2\\sqrt{3} + 3\\sqrt{3} = 5\\sqrt{3} $", a:0},
+  {q:"Calculer : $ D = \\sqrt{98} - 5\\sqrt{2} $", f:"Simplifier $ \\sqrt{98} $ avant de soustraire.", c:["$ 2\\sqrt{2} $","$ 12\\sqrt{2} $","$ 2 $","$ 7\\sqrt{2} $"], e:"$ D = 7\\sqrt{2} - 5\\sqrt{2} = 2\\sqrt{2} $", a:0},
+  {q:"Calculer : $ E = 3\\sqrt{75} - \\sqrt{27} $", f:"Simplifier $ \\sqrt{75} $ et $ \\sqrt{27} $.", c:["$ 12\\sqrt{3} $","$ 2\\sqrt{3} $","$ 3\\sqrt{3} $","$ 18\\sqrt{3} $"], e:"$ E = 3(5\\sqrt{3}) - 3\\sqrt{3} = 15\\sqrt{3} - 3\\sqrt{3} = 12\\sqrt{3} $", a:0},
+  // Produits
+  {q:"Calculer : $ F = \\sqrt{50} \\times \\sqrt{2} $", f:"$ \\sqrt{a} \\times \\sqrt{b} = \\sqrt{a \\times b} $", c:["$ 10 $","$ 100 $","$ 20 $","$ 50 $"], e:"$ F = \\sqrt{50 \\times 2} = \\sqrt{100} = 10 $", a:0},
+  {q:"Calculer : $ G = 4\\sqrt{2} \\times 3\\sqrt{3} $", f:"Multiplier les nombres et les racines.", c:["$ 12\\sqrt{6} $","$ 7\\sqrt{6} $","$ 12\\sqrt{5} $","$ 12\\sqrt{8} $"], e:"$ G = (4 \\times 3) \\times (\\sqrt{2} \\times \\sqrt{3}) = 12\\sqrt{6} $", a:0},
+  // Produits remarquables
+  {q:"Calculer : $ H = (2+\\sqrt{3})^2 $", f:"$ (a+b)^2 = a^2 + 2ab + b^2 $", c:["$ 7 + 4\\sqrt{3} $","$ 5 + 4\\sqrt{3} $","$ 4 + 4\\sqrt{3} $","$ 7 + 2\\sqrt{3} $"], e:"$ H = 4 + 4\\sqrt{3} + 3 = 7 + 4\\sqrt{3} $", a:0},
+  {q:"Calculer : $ K = (\\sqrt{5}-2)^2 $", f:"$ (a-b)^2 = a^2 - 2ab + b^2 $", c:["$ 9 - 4\\sqrt{5} $","$ 5 - 4\\sqrt{5} $","$ 9 - 2\\sqrt{5} $","$ 1 - 4\\sqrt{5} $"], e:"$ K = 5 - 4\\sqrt{5} + 4 = 9 - 4\\sqrt{5} $", a:0},
+  {q:"Calculer : $ M = (\\sqrt{6}+\\sqrt{2})(\\sqrt{6}-\\sqrt{2}) $", f:"$ (a+b)(a-b) = a^2 - b^2 $", c:["$ 4 $","$ 2 $","$ 8 $","$ 12 $"], e:"$ M = 6 - 2 = 4 $", a:0},
+  {q:"Calculer : $ N = (4\\sqrt{3} - 2)(4\\sqrt{3} + 2) $", f:"$ (a-b)(a+b) = a^2 - b^2 $. Ici $ a = 4\\sqrt{3} $", c:["$ 44 $","$ 36 $","$ -44 $","$ 40 $"], e:"$ N = (4\\sqrt{3})^2 - 2^2 = 16(3) - 4 = 48 - 4 = 44 $", a:0},
+  {q:"Calculer : $ P = (2\\sqrt{7} - 3)(2\\sqrt{7} + 3) $", f:"$ (a-b)(a+b) = a^2 - b^2 $. Ici $ a = 2\\sqrt{7} $", c:["$ 19 $","$ 17 $","$ 25 $","$ -19 $"], e:"$ P = (2\\sqrt{7})^2 - 3^2 = 4(7) - 9 = 28 - 9 = 19 $", a:0}
+];
+
+/* ============================ STATE & LOGIC ============================ */
+let currentSet = null, currentIndex = 0, score = 0, answered = false, setUsedFirst = 'A';
+let audioCtx = null, musicGain = null, musicPlaying = false, musicNodes = [];
+
+function initAudio(){
+  if(audioCtx) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    musicGain = audioCtx.createGain(); musicGain.gain.value = 0.08; musicGain.connect(audioCtx.destination);
+  } catch(e) {}
+}
+function startMusic(){
+  initAudio(); if(!audioCtx) return; if(audioCtx.state === 'suspended') audioCtx.resume(); if(musicPlaying) return;
+  musicPlaying = true;
+  const notes = [261.63, 329.63, 392.00, 329.63, 440.00, 392.00, 329.63, 293.66];
+  let time = audioCtx.currentTime;
+  function scheduleLoop(){
+    if(!musicPlaying) return;
+    notes.forEach((freq,i)=>{
+      const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
+      osc.type = 'triangle'; osc.frequency.value = freq;
+      g.gain.setValueAtTime(0, time + i*0.35); g.gain.linearRampToValueAtTime(0.5, time + i*0.35 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.01, time + i*0.35 + 0.3);
+      osc.connect(g); g.connect(musicGain); osc.start(time + i*0.35); osc.stop(time + i*0.35 + 0.3); musicNodes.push(osc);
+    });
+    const bass = audioCtx.createOscillator(); const bg = audioCtx.createGain();
+    bass.type = 'sine'; bass.frequency.value = 130.81; bg.gain.setValueAtTime(0, time);
+    bg.gain.linearRampToValueAtTime(0.3, time + 0.1); bg.gain.exponentialRampToValueAtTime(0.01, time + 2.8);
+    bass.connect(bg); bg.connect(musicGain); bass.start(time); bass.stop(time + 2.8);
+    time += 2.8; setTimeout(scheduleLoop, 2700);
+  }
+  scheduleLoop();
+}
+function stopMusic(){ musicPlaying = false; musicNodes.forEach(n=>{try{n.stop()}catch(e){}}); musicNodes = []; }
+function playCorrect(){
+  if(!audioCtx) return; const now = audioCtx.currentTime; const notes = [523.25, 659.25, 783.99, 1046.50];
+  notes.forEach((freq,i)=>{
+    const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
+    osc.type = 'sine'; osc.frequency.value = freq; g.gain.setValueAtTime(0, now + i*0.08);
+    g.gain.linearRampToValueAtTime(0.3, now + i*0.08 + 0.02); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.08 + 0.5);
+    osc.connect(g); g.connect(audioCtx.destination); osc.start(now + i*0.08); osc.stop(now + i*0.08 + 0.5);
+  });
+}
+function playWrong(){
+  if(!audioCtx) return; const now = audioCtx.currentTime; const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
+  osc.type = 'sawtooth'; osc.frequency.setValueAtTime(220, now); osc.frequency.exponentialRampToValueAtTime(110, now + 0.5);
+  g.gain.setValueAtTime(0.25, now); g.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+  osc.connect(g); g.connect(audioCtx.destination); osc.start(now); osc.stop(now + 0.6);
+}
+function createMathBg(){
+  const bg = document.getElementById('mathBg');
+  const symbols = ['√','x²','a²','b²','(a+b)²','(a-b)²','a²-b²','2ab','+','-','×','÷','='];
+  for(let i=0;i<35;i++){
+    const s = document.createElement('span'); s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    s.style.left = Math.random()*100 + '%'; s.style.fontSize = (1 + Math.random()*2) + 'rem';
+    s.style.animationDuration = (10 + Math.random()*20) + 's'; s.style.animationDelay = (Math.random()*15) + 's';
+    s.style.color = ['#FFD60A','#F72585','#4CC9F0','#06D6A0','#1282A2'][Math.floor(Math.random()*5)];
+    bg.appendChild(s);
+  }
+}
+function shuffle(arr){ const a = arr.slice(); for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; }
+function prepareQuestion(q){ const correctText = q.c[q.a]; const shuffled = shuffle(q.c); return { q: q.q, f: q.f, e: q.e, choices: shuffled, correctIndex: shuffled.indexOf(correctText) }; }
+function typesetMath(){ if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise().catch(err => console.log(err)); } }
+function startQuiz(){
+  if(setUsedFirst === 'A'){ currentSet = setB; setUsedFirst = 'B'; } else { currentSet = setA; setUsedFirst = 'A'; }
+  currentSet = shuffle(currentSet); currentIndex = 0; score = 0; answered = false;
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('endScreen').classList.remove('active');
+  document.getElementById('quizScreen').classList.add('active');
+  document.getElementById('qTotal').textContent = currentSet.length;
+  document.getElementById('scoreDisplay').textContent = '0';
+  document.getElementById('musicToggle').style.display = 'block';
+  document.getElementById('photoBtn').style.display = 'block';
+  document.body.classList.remove('photo-mode');
+  document.getElementById('exitPhotoBtn').style.display = 'none';
+  loadQuestion();
+}
+function loadQuestion(){
+  answered = false; const q = prepareQuestion(currentSet[currentIndex]);
+  document.getElementById('qCurrent').textContent = currentIndex + 1;
+  document.getElementById('qNumber').textContent = 'Question ' + (currentIndex + 1);
+  document.getElementById('qText').innerHTML = q.q;
+  const choicesEl = document.getElementById('choices'); choicesEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.choices.forEach((choice,i)=>{
+    const div = document.createElement('div'); div.className = 'choice';
+    div.innerHTML = `<div class="letter">${letters[i]}</div><div>${choice}</div>`;
+    div.onclick = () => selectAnswer(div, i, q.correctIndex, q.e, q.f);
+    choicesEl.appendChild(div);
+  });
+  const progress = ((currentIndex) / currentSet.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+  document.getElementById('nextBtn').classList.remove('show');
+  setTimeout(typesetMath, 50);
+}
+function selectAnswer(el, chosenIdx, correctIdx, explanation, formula){
+  if(answered) return; answered = true;
+  const allChoices = document.querySelectorAll('.choice');
+  allChoices.forEach(c => c.classList.add('disabled'));
+  if(chosenIdx === correctIdx){
+    el.classList.add('correct'); score++;
+    document.getElementById('scoreDisplay').textContent = score; playCorrect();
+    showFeedback(true, currentSet[currentIndex], explanation, formula); launchConfetti();
+  } else {
+    el.classList.add('wrong'); allChoices[correctIdx].classList.add('reveal'); playWrong();
+    showFeedback(false, currentSet[currentIndex], explanation, formula);
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+function showFeedback(correct, q, explanation, formula){
+  const overlay = document.getElementById('feedbackOverlay'); const box = document.getElementById('feedbackBox');
+  const icon = document.getElementById('feedbackIcon'); const title = document.getElementById('feedbackTitle');
+  const msg = document.getElementById('feedbackMsg'); const ans = document.getElementById('feedbackAnswer');
+  box.className = 'feedback-box ' + (correct ? 'correct' : 'wrong');
+  if(correct){
+    icon.innerHTML = '<i class="fas fa-check-circle"></i>'; title.textContent = 'Bravo !';
+    const msgs = ['Excellent travail !','Très bien !','Continue comme ça !','Parfait !','Génial !','Tu maîtrises !'];
+    msg.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+  } else {
+    icon.innerHTML = '<i class="fas fa-times-circle"></i>'; title.textContent = 'Sorry, votre choix est incorrect';
+    msg.textContent = 'Ne t\'inquiète pas, voici la correction :';
+  }
+  ans.style.display = 'block';
+  ans.innerHTML = `
+    <div class="fb-formula"><i class="fas fa-book"></i> <strong>Formule utilisée :</strong> <br> ${formula}</div>
+    <div><strong>Correction :</strong> <br> ${explanation}</div>
+  `;
+  overlay.classList.add('show'); setTimeout(typesetMath, 50); setTimeout(()=> overlay.classList.remove('show'), 3500);
+}
+function launchConfetti(){
+  const colors = ['#FFD60A','#F72585','#06D6A0','#4CC9F0','#1282A2','#0f1424'];
+  for(let i=0;i<60;i++){
+    const piece = document.createElement('div'); piece.className = 'confetti-piece';
+    piece.style.left = Math.random()*100 + 'vw'; piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDuration = (2 + Math.random()*2) + 's'; piece.style.animationDelay = (Math.random()*0.5) + 's';
+    if(Math.random() > 0.5) piece.style.borderRadius = '50%'; if(Math.random() > 0.7) piece.style.transform = 'scale(1.5)';
+    document.body.appendChild(piece); setTimeout(()=> piece.remove(), 4500);
+  }
+}
+function nextQuestion(){ if(currentIndex < currentSet.length - 1){ currentIndex++; loadQuestion(); } else { endQuiz(); } }
+function endQuiz(){
+  document.getElementById('quizScreen').classList.remove('active');
+  document.getElementById('endScreen').classList.add('active');
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('photoBtn').style.display = 'none';
+  const stars = document.querySelectorAll('#stars i'); stars.forEach(s => s.classList.remove('active'));
+  const percent = score / currentSet.length; let starCount = 0;
+  if(percent >= 0.9) starCount = 5; else if(percent >= 0.75) starCount = 4;
+  else if(percent >= 0.6) starCount = 3; else if(percent >= 0.4) starCount = 2;
+  else if(percent >= 0.2) starCount = 1;
+  for(let i=0;i<starCount;i++){ setTimeout(()=>{ stars[i].classList.add('active'); }, 300 + i*200); }
+  const msg = document.getElementById('endMessage'); let title = 'Quiz Terminé !'; let text = '';
+  if(percent >= 0.9){ title = 'Excellent ! 🏆'; text = 'Félicitations ! Tu maîtrises parfaitement les racines carrées. Professeur Douma Ali est fier de toi !'; if(score === currentSet.length) launchConfetti(); }
+  else if(percent >= 0.75){ title = 'Très Bien ! 🎉'; text = 'Très bon travail ! Continue à t\'entraîner pour atteindre la perfection.'; }
+  else if(percent >= 0.5){ title = 'Bien ! 👍'; text = 'Bon début ! Révise bien les propriétés des racines carrées et les identités remarquables.'; }
+  else if(percent >= 0.25){ title = 'Courage ! 💪'; text = 'Continue tes efforts. Revois les formules de simplification et les produits remarquables.'; }
+  else { title = 'Ne lâche pas ! 📚'; text = 'Revois les bases des racines carrées. Tu vas y arriver avec de la pratique !'; }
+  document.getElementById('endTitle').textContent = title; msg.innerHTML = '<i class="fas fa-quote-left"></i> ' + text; typesetMath();
+}
+
+document.getElementById('btnStart').onclick = () => {
+  initAudio(); if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); startMusic();
+  document.getElementById('musicToggle').classList.add('playing');
+  document.getElementById('musicToggle').innerHTML = '<i class="fas fa-volume-up"></i>'; startQuiz();
+};
+document.getElementById('nextBtn').onclick = nextQuestion;
+document.getElementById('btnReplay').onclick = () => { startQuiz(); };
+document.getElementById('musicToggle').onclick = function(){
+  if(musicPlaying){ stopMusic(); this.classList.remove('playing'); this.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
+  else { startMusic(); this.classList.add('playing'); this.innerHTML = '<i class="fas fa-volume-up"></i>'; }
+};
+document.getElementById('photoBtn').onclick = () => {
+  document.body.classList.add('photo-mode'); document.getElementById('photoBtn').style.display = 'none';
+  document.getElementById('exitPhotoBtn').style.display = 'block'; setTimeout(typesetMath, 50);
+};
+document.getElementById('exitPhotoBtn').onclick = () => {
+  document.body.classList.remove('photo-mode'); document.getElementById('photoBtn').style.display = 'block';
+  document.getElementById('exitPhotoBtn').style.display = 'none'; setTimeout(typesetMath, 50);
+};
+createMathBg();
+document.addEventListener('keydown', e => {
+  if(!document.getElementById('quizScreen').classList.contains('active')) return;
+  if(answered && (e.key === 'Enter' || e.key === ' ')){
+    e.preventDefault(); if(document.getElementById('nextBtn').classList.contains('show')) nextQuestion(); return;
+  }
+  if(answered) return;
+  const keys = {'1':0,'2':1,'3':2,'4':3,'a':0,'b':1,'c':2,'d':3,'A':0,'B':1,'C':2,'D':3};
+  if(keys[e.key] !== undefined){ const choices = document.querySelectorAll('.choice'); if(choices[keys[e.key]]) choices[keys[e.key]].click(); }
+});
+</script>
+</body>
+</html>
